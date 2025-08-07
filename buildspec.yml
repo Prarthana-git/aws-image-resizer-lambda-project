@@ -12,10 +12,11 @@ phases:
       - pip install -r lambda/requirements.txt -t lambda/
   build:
     commands:
-      - set -e  # Exit immediately on any command failure
-      - echo Packaging with SAM...
-      - mkdir -p output  # Ensure output dir exists
-      - sam package \
+      - |
+        set -e  # Exit immediately on any command failure
+        echo Packaging with SAM...
+        mkdir -p output  # Ensure output dir exists
+        sam package \
           --template-file template.yaml \
           --s3-bucket image-resizer-codebuild-artifacts-ireland \
           --output-template-file output/packaged.yaml
