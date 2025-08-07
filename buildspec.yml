@@ -6,10 +6,12 @@ phases:
       python: 3.12
     commands:
       - pip install --upgrade awscli aws-sam-cli
+
   pre_build:
     commands:
       - echo Installing dependencies...
       - pip install -r lambda/requirements.txt -t lambda/
+
   build:
     commands:
       - echo Packaging with SAM...
@@ -20,7 +22,7 @@ phases:
 
 artifacts:
   files:
-    - output/packaged.yaml
+    - packaged.yaml
   base-directory: output
-  name: BuildArtifact
   discard-paths: yes
+  name: BuildArtifact
