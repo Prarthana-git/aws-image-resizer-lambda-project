@@ -16,6 +16,9 @@ Resources:
 
   ImageResizerFunction:
     Type: AWS::Serverless::Function
+    DependsOn:
+      - SourceBucket
+      - DestinationBucket
     Properties:
       FunctionName: image-resizer-lambda
       Runtime: python3.12
@@ -37,7 +40,3 @@ Resources:
           Properties:
             Bucket: !Ref SourceBucket
             Events: s3:ObjectCreated:*
-
-      DependsOn:
-        - SourceBucket
-        - DestinationBucket
