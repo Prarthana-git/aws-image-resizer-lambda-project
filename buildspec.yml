@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - pip install --upgrade awscli aws-sam-cli
+  pre_build:
+    commands:
+      - echo Installing dependencies...
+      - pip install -r lambda/requirements.txt -t lambda/
+  build:
+    commands:
+      - echo Packaging with SAM...
+      - sam package \
+          --template-file template.yaml \
+          --s3-bucket image-resizer-codebuild-artifacts-ireland  \
+          --output-template-file packaged.yaml
+artifacts:
+  files:
+    - packaged.yaml
