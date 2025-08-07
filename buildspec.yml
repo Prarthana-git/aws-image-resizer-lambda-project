@@ -6,23 +6,28 @@ phases:
       python: 3.12
     commands:
       - pip install --upgrade awscli aws-sam-cli
+
   pre_build:
     commands:
       - echo Installing dependencies...
       - pip install -r lambda/requirements.txt -t lambda/
+
   build:
-    commands:
+    commands: 
       - |
-        set -e  # Exit immediately on any command failure
+        set -e  # Exit immediately on any error
         echo Packaging with SAM...
-        mkdir -p output  # Ensure output dir exists
+        mkdir -p output
         sam package \
           --template-file template.yaml \
           --s3-bucket image-resizer-codebuild-artifacts-ireland \
           --output-template-file output/packaged.yaml
+        echo "Checking if packaged.yaml exists..."
+        ls -lh output/
+
 artifacts:
   files:
-    - output/packaged.yaml
+    - packaged.yaml
   base-directory: output
   name: BuildArtifact
   discard-paths: yes
