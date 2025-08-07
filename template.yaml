@@ -3,6 +3,12 @@ Transform: AWS::Serverless-2016-10-31
 Description: Image Resizer Lambda using S3 trigger and environment variable
 
 Resources:
+  SourceBucket:
+    Type: AWS::S3::Bucket
+
+  DestinationBucket:
+    Type: AWS::S3::Bucket
+
   ImageResizerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -14,15 +20,15 @@ Resources:
       Timeout: 10
       Environment:
         Variables:
-          DEST_BUCKET: image-resizer-destination-bucket-ireland
+          DEST_BUCKET: !Ref DestinationBucket
       Policies:
         - S3ReadPolicy:
-            BucketName: image-resizer-source-bucket-ireland
+            BucketName: !Ref SourceBucket
         - S3WritePolicy:
-            BucketName: image-resizer-destination-bucket-ireland
+            BucketName: !Ref DestinationBucket
       Events:
         ImageUpload:
           Type: S3
           Properties:
-            Bucket: image-resizer-source-bucket-ireland
+            Bucket: !Ref SourceBucket
             Events: s3:ObjectCreated:*
